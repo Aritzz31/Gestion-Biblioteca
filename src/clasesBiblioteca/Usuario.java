@@ -29,9 +29,7 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 		this.contraseña = contraseña;
 		this.fechaNacimiento = fechaNacimiento;
-		this.mayorEdad = ComprobarMayorEdad();
-		this.librosPrestados = new HashMap<Libro, LocalDate>();
-		this.Suspendido = false;
+		this.idUsuario = IdAutomatico();
 	}
 	
 	public boolean isMayorEdad() {
@@ -98,8 +96,8 @@ public class Usuario implements Serializable {
 	    return edad >= 18;
 	}
 	
-	public void IdAutomatico() {
-		this.idUsuario = this.nombre.substring(0, 3).toUpperCase() + (int)(Math.random() * 10000);
+	public String IdAutomatico() {
+		return this.idUsuario = this.nombre.substring(0, 2).toUpperCase() + "-" + (int)(Math.random() * 10000);
 	}
 	@Override
 	public String toString() {
