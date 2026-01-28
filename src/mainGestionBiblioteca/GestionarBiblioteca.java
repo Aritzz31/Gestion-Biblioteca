@@ -9,7 +9,7 @@ public class GestionarBiblioteca {
 		int opcion;
 		do {
 			opcion = mostrarMenu();
-			System.out.println("");
+			System.out.println("---MENU PRINCIPAL DE LA GESTION DE LA BIBLIOTECA---");
 			switch (opcion) {
 			case 1:
 			
@@ -36,7 +36,7 @@ public class GestionarBiblioteca {
 				System.out.println("Saliendo...");
 				break;
 			}
-		} while (opcion != 5);
+		} while (opcion != 8);
 	}
 	
 	public static int mostrarMenu() {
