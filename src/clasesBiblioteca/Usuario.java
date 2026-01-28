@@ -1,13 +1,14 @@
 package clasesBiblioteca;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
 	private String nombre;
-	private String idUsuario;
+	private String idUsuario; //El id sera Automatico al crear el usuario
 	private String contraseña;
-	private boolean Suspendido; //no puedes reservar mas libros hasta que devuelvas 
+	private boolean Suspendido; //no puedes reservar mas libros hasta que devuelvas los libros que hayan terminado el plazo 
 	private HashMap<Libro, LocalDate> librosPrestados;
 	private LocalDate fechaNacimiento;
 	private boolean mayorEdad;
@@ -22,7 +23,15 @@ public class Usuario implements Serializable {
 		this.librosPrestados = librosPrestados;
 		this.fechaNacimiento = fechaNacimiento;
 		this.mayorEdad = ComprobarMayorEdad();
-		
+	}
+	
+	public Usuario(String nombre, String contraseña, LocalDate fechaNacimiento) {
+		this.nombre = nombre;
+		this.contraseña = contraseña;
+		this.fechaNacimiento = fechaNacimiento;
+		this.mayorEdad = ComprobarMayorEdad();
+		this.librosPrestados = new HashMap<Libro, LocalDate>();
+		this.Suspendido = false;
 	}
 	
 	public boolean isMayorEdad() {
@@ -77,6 +86,8 @@ public class Usuario implements Serializable {
 		this.librosPrestados = librosPrestados;
 	}
 	
+	
+	
 	public boolean ComprobarMayorEdad(){
 	    LocalDate hoy = LocalDate.now();
 	    int edad = hoy.getYear() - fechaNacimiento.getYear();
@@ -85,6 +96,10 @@ public class Usuario implements Serializable {
 	        edad--;
 	    }
 	    return edad >= 18;
+	}
+	
+	public void IdAutomatico() {
+		this.idUsuario = this.nombre.substring(0, 3).toUpperCase() + (int)(Math.random() * 10000);
 	}
 	@Override
 	public String toString() {
