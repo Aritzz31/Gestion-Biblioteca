@@ -1,5 +1,5 @@
 package clasesBiblioteca;
 
 public enum Genero {
-	TERROR, AVENTURAS, FICCION;
+	TERROR, AVENTURAS, FICCION,PITO;
 }
