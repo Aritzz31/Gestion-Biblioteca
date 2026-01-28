@@ -12,6 +12,12 @@ public class LFisico extends Libro {
 		this.tapaDura = tapaDura;
 		this.disponibles = disponibles;
 	}
+	
+	public LFisico(String titulo, String isbn, String autor, Genero genero, boolean tapaDura, int disponibles) {
+		super(titulo, isbn, autor, genero);
+		this.tapaDura = tapaDura;
+		this.disponibles = disponibles;
+	}
 
 	public boolean isTapaDura() {
 		return tapaDura;

@@ -4,6 +4,10 @@ import java.util.HashMap;
 import utilidades.Utilidades;
 import clasesBiblioteca.Libro;
 import clasesBiblioteca.Usuario;
+import clasesBiblioteca.Genero;
+import clasesBiblioteca.LDigital;
+import clasesBiblioteca.LFisico;
+import clasesBiblioteca.Formato;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +22,8 @@ import utilidades.MyObjectOutputStream;
 public class GestionarBiblioteca {
 	public static void main(String[] args) {
 		File fichU = new File("usuarios.dat");
+		File fichL = new File("libros.dat");
+		FillData(fichL);
 		int opcion;
 		do {
 			opcion = mostrarMenu();
@@ -67,7 +73,7 @@ public class GestionarBiblioteca {
 
 		return Utilidades.leerInt(1, 9);
 	}
-	
+
 	private static void crearUsuario(File fichU) {
 		System.out.println("Introduce el nombre del usuario:");
 		String nombre = Utilidades.introducirCadena(); //El nombre no puede tener menos de 2 caracteres
@@ -79,7 +85,7 @@ public class GestionarBiblioteca {
 		} catch (Exception e) {
 			System.out.println("Error al introducir el nombre del usuario.");
 		}
-		
+
 		System.out.println("Introduce la contraseña del usuario:");
 		String contraseña = Utilidades.introducirCadena();
 		try {
@@ -112,6 +118,28 @@ public class GestionarBiblioteca {
 		}
 	}
 
+	private static void FillData(File fichL) {
+		if (!fichL.exists()) {
+			ObjectOutputStream oos;
+			try {
+				oos = new ObjectOutputStream(new FileOutputStream(fichL, true));
+				Libro libro1 = new LFisico("El Quijote","1234567890123", "Miguel de Cervantes", Genero.AVENTURAS, true, 5);
+				Libro libro2 = new LFisico("Dracula","3216549876543", "Bram Stoker", Genero.TERROR, false, 3);
+				Libro libro3 = new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF, 2.5);
+				Libro libro4 = new LDigital("El Principito", "4567891230123", "Antoine de Saint-Exupéry", Genero.AVENTURAS, Formato.EPUB, 1.2);
+
+				oos.writeObject(libro1);
+				oos.writeObject(libro2);
+				oos.writeObject(libro3);
+				oos.writeObject(libro4);
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private static boolean FicheroUsarioExiste(File fichU) {
 		if (!fichU.exists()) {
 			return false;
@@ -119,6 +147,8 @@ public class GestionarBiblioteca {
 			return true;
 		}
 	}
+
+
 
 	private static void añadirLibro() {
 
