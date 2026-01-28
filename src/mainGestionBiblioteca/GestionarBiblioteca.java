@@ -17,5 +17,9 @@ public class GestionarBiblioteca {
 		System.out.println("6. Listar catalogo de libros");
 		System.out.println("7. Buscar usuario por ID");
 	}
+	
+	public void menu () {
+		
+	}
 
 }
