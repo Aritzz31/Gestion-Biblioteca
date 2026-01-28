@@ -75,8 +75,13 @@ public class GestionarBiblioteca {
 	}
 
 	private static void crearUsuario(File fichU) {
+		LocalDate fechaNacimiento;
+		String nombre,contraseña;
+		Usuario nuevoUsuario;
+
 		System.out.println("Introduce el nombre del usuario:");
-		String nombre = Utilidades.introducirCadena(); //El nombre no puede tener menos de 2 caracteres
+		nombre = Utilidades.introducirCadena(); //El nombre no puede tener menos de 2 caracteres   
+
 		try {
 			while (nombre.length() < 2) {
 				System.out.println("El nombre debe tener al menos 2 caracteres. Introduce el nombre del usuario:");
@@ -87,7 +92,7 @@ public class GestionarBiblioteca {
 		}
 
 		System.out.println("Introduce la contraseña del usuario:");
-		String contraseña = Utilidades.introducirCadena();
+		contraseña = Utilidades.introducirCadena();
 		try {
 			while (contraseña.length() < 8) {
 				System.out.println("La contraseña debe tener al menos 8 caracteres o numeros. Introduce la contraseña del usuario:");
@@ -97,8 +102,8 @@ public class GestionarBiblioteca {
 			System.out.println("Error al introducir la contraseña del usuario.");
 		}
 		System.out.println("Introduzca su fecha de nacumiento (aaaa/mm/dd):");
-		LocalDate fechaNacimiento = Utilidades.leerFechaAMD();
-		Usuario nuevoUsuario = new Usuario(nombre, contraseña, fechaNacimiento);
+		fechaNacimiento = Utilidades.leerFechaAMD();
+		nuevoUsuario = new Usuario(nombre, contraseña, fechaNacimiento);
 		MyObjectOutputStream moos;
 		ObjectOutputStream oos;
 		try {
