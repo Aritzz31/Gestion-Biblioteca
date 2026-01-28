@@ -55,7 +55,15 @@ public class GestionarBiblioteca {
 		return Utilidades.leerInt(1, 8);
 	}
 	
-	public void menu () {
+	private static void crearUsuario() {
+		
+	}
+	
+	private static void añadirLibro() {
+		
+	}
+	
+	private static void borrarUsuario() {
 		
 	}
 
