@@ -164,7 +164,7 @@ public class GestionarBiblioteca {
 			} catch (FileNotFoundException e) {
 				System.out.println("No se encontró el fichero");
 			} catch (ClassNotFoundException e) {
-				System.out.println("La clase Persona no es válida");
+				System.out.println("La clase Usuario no es válida");
 			} catch (IOException e) {
 				System.out.println("Error leyendo el fichero");
 			}
