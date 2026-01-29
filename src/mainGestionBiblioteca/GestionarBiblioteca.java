@@ -140,7 +140,6 @@ public class GestionarBiblioteca {
 				oos.writeObject(libro4);
 				oos.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
