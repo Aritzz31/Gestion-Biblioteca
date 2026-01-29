@@ -2,6 +2,7 @@ package mainGestionBiblioteca;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+
 import utilidades.Utilidades;
 import clasesBiblioteca.Libro;
 import clasesBiblioteca.Usuario;
@@ -64,9 +65,9 @@ public class GestionarBiblioteca {
 	public static int mostrarMenu() {
 		System.out.println("----- Gestion de Biblioteca -----");
 		System.out.println("1- Crear Usuario");
-		System.out.println("2- Añadir un nuevo Libro");
+		System.out.println("2- Añadir Libro a usuario");
 		System.out.println("3- Borrar usuario");
-		System.out.println("4- Eliminar libro prestado de usuario");
+		System.out.println("4- Eliminar libro de usuario");
 		System.out.println("5- Listar usuarios con sus respectivos libros");
 		System.out.println("6- Listar catalogo de libros");
 		System.out.println("7- Buscar usuario por ID");
@@ -172,7 +173,7 @@ public class GestionarBiblioteca {
 	}
 
 
-	private static void añadirLibro() {
+	private static void añadirLibroAUsuario() {
 
 	}
 
@@ -180,8 +181,66 @@ public class GestionarBiblioteca {
 
 	}
 	
-	private static void eliminarLibro() {
+	private static void eliminarLibroDeUsuario() {
 		
+	}
+	
+	private static void listarUsuariosConSusLibros(File fichU) {
+		boolean finArchivo = false;
+		ObjectInputStream ois = null;
+		if (fichU.exists()) {
+			try {
+				ois = new ObjectInputStream(new FileInputStream(fichU));
+				while (!finArchivo) {
+					try {
+						Usuario u = (Usuario) ois.readObject();
+						System.out.println(u);
+					} catch (EOFException e) {
+						finArchivo = true;
+					}
+				}
+				ois.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("No se encontró el fichero");
+			} catch (ClassNotFoundException e) {
+				System.out.println("La clase Usuario no es válida");
+			} catch (IOException e) {
+				System.out.println("Error leyendo el fichero");
+			}
+		} else {
+			System.out.println("El fichero no existe");
+		}
+	}
+	
+	private static void listarLibros(File fichL) {
+		boolean finArchivo = false;
+		ObjectInputStream ois = null;
+
+		if (fichL.exists()) {
+			try {
+				ois = new ObjectInputStream(new FileInputStream(fichL));
+				while (!finArchivo) {
+					try {
+						Libro l = (Libro) ois.readObject();
+						System.out.println(l);
+					} catch (EOFException e) {
+						finArchivo = true;
+					}
+				}
+				ois.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("No se encontró el fichero");
+			} catch (ClassNotFoundException e) {
+				System.out.println("La clase Libro no es válida");
+			} catch (IOException e) {
+				System.out.println("Error leyendo el fichero");
+			}
+		} else {
+			System.out.println("El fichero no existe");
+		}
+	
+
+
 	}
 
 }
