@@ -149,7 +149,7 @@ public class GestionarBiblioteca {
 	private static boolean FicheroUsarioExiste(File fichU) {
 		boolean finArchivo = false, existe = false;
 		ObjectInputStream ois = null;
-		
+
 		if (!fichU.exists()) {
 			try {
 				ois = new ObjectInputStream(new FileInputStream(fichU));
@@ -177,14 +177,48 @@ public class GestionarBiblioteca {
 
 	}
 
-	private static void borrarUsuario() {
+	private static void borrarUsuario(File fichU) {
+		if (FicheroUsarioExiste(fichU)) {
+			boolean finArchivo = false;
+			File tempFile = new File("temp.dat");
+			try {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU));
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile));
+				while (!finArchivo) {
+					try {
+						Usuario usuario = (Usuario) ois.readObject();
+						System.out.println("Introduce el ID del usuario al dar de baja");
+						String dniTrabajador = Utilidades.introducirCadena();
+						oos.writeObject(usuario);
+					} catch (EOFException e) {
+						finArchivo = true;
+					}
+				}
+				ois.close();
+				oos.close();
+				if (!fichU.delete()) {
+					System.out.println("No se pudo borrar el archivo original");
+					return;
+				}
+				if (!tempFile.renameTo(fichU)) {
+					System.out.println("No se pudo renombrar el archivo temporal");
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("No se encontró el fichero");
+			} catch (ClassNotFoundException e) {
+				System.out.println("La clase Usuario no es válida");
+			} catch (IOException e) {
+				System.out.println("Error leyendo el fichero");
+			}
+		} else {
+			System.out.println("El fichero no existe");
+		}
+	}
+
+	private static void eliminarLibroDeUsuario() {
 
 	}
-	
-	private static void eliminarLibroDeUsuario() {
-		
-	}
-	
+
 	private static void listarUsuariosConSusLibros(File fichU) {
 		boolean finArchivo = false;
 		ObjectInputStream ois = null;
@@ -211,7 +245,7 @@ public class GestionarBiblioteca {
 			System.out.println("El fichero no existe");
 		}
 	}
-	
+
 	private static void listarLibros(File fichL) {
 		boolean finArchivo = false;
 		ObjectInputStream ois = null;
@@ -238,9 +272,6 @@ public class GestionarBiblioteca {
 		} else {
 			System.out.println("El fichero no existe");
 		}
-	
-
-
 	}
 
 }
