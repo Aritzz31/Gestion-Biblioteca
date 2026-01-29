@@ -1,6 +1,7 @@
 package mainGestionBiblioteca;
 import java.time.LocalDate;
 import java.util.HashMap;
+
 import utilidades.Utilidades;
 import clasesBiblioteca.Libro;
 import clasesBiblioteca.Usuario;
@@ -146,12 +147,31 @@ public class GestionarBiblioteca {
 	}
 
 	private static boolean FicheroUsarioExiste(File fichU) {
+		boolean finArchivo = false, existe = false;
+		ObjectInputStream ois = null;
+		
 		if (!fichU.exists()) {
-			return false;
-		} else {
-			return true;
+			try {
+				ois = new ObjectInputStream(new FileInputStream(fichU));
+				while (!finArchivo) {
+					try {
+						Usuario p = (Usuario) ois.readObject();
+					} catch (EOFException e) {
+						finArchivo = true;
+					}
+				}
+				ois.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("No se encontró el fichero");
+			} catch (ClassNotFoundException e) {
+				System.out.println("La clase Persona no es válida");
+			} catch (IOException e) {
+				System.out.println("Error leyendo el fichero");
+			}
 		}
+		return existe;
 	}
+
 
 	private static void añadirLibro() {
 
