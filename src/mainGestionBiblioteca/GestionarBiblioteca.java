@@ -180,5 +180,9 @@ public class GestionarBiblioteca {
 	private static void borrarUsuario() {
 
 	}
+	
+	private static void eliminarLibro() {
+		
+	}
 
 }
