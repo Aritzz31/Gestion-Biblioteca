@@ -62,14 +62,14 @@ public class GestionarBiblioteca {
 
 	public static int mostrarMenu() {
 		System.out.println("----- Gestion de Biblioteca -----");
-		System.out.println("1. Crear Usuario");
-		System.out.println("2. Añadir un nuevo Libro");
-		System.out.println("3. Borrar usuario");
-		System.out.println("4. Eliminar libro prestado de usuario");
-		System.out.println("5.Listar usuarios con sus respectivos libros");
-		System.out.println("6. Listar catalogo de libros");
-		System.out.println("7. Buscar usuario por ID");
-		System.out.println("8.Modificar datos de libros");
+		System.out.println("1- Crear Usuario");
+		System.out.println("2- Añadir un nuevo Libro");
+		System.out.println("3- Borrar usuario");
+		System.out.println("4- Eliminar libro prestado de usuario");
+		System.out.println("5- Listar usuarios con sus respectivos libros");
+		System.out.println("6- Listar catalogo de libros");
+		System.out.println("7- Buscar usuario por ID");
+		System.out.println("8- Modificar datos de libros");
 
 		return Utilidades.leerInt(1, 9);
 	}
@@ -152,8 +152,6 @@ public class GestionarBiblioteca {
 			return true;
 		}
 	}
-
-
 
 	private static void añadirLibro() {
 
