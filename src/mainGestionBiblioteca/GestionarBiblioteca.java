@@ -33,7 +33,7 @@ public class GestionarBiblioteca {
 				crearUsuario(fichU);
 				break;
 			case 2:
-
+				añadirLibroAUsuario(fichU, fichL);
 				break;
 			case 3:
 				borrarUsuario(fichU);
@@ -51,9 +51,10 @@ public class GestionarBiblioteca {
 				break;
 
 			case 7:
+				
 				break;
 			case 8:
-
+				
 				break;
 			case 9:
 				System.out.println("Saliendo del programa...");
@@ -173,50 +174,105 @@ public class GestionarBiblioteca {
 	}
 
 
-	private static void añadirLibroAUsuario() {
+	private static void añadirLibroAUsuario(File fichU, File fichL) {
+		//Comprobar que el fichero usuario existe
+		//Comprobar que el el usuario existe
+		//Comprobar que el libro existe
+		boolean finArchivo = false;
+		boolean encontrado = false;
+		String idUsuario;
 
-	}
-
-	private static void borrarUsuario(File fichU) {
-		if (FicheroUsarioExiste(fichU)) {
-			boolean finArchivo = false;
-			File tempFile = new File("temp.dat");
-			try {
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU));
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile));
-				while (!finArchivo) {
+		if (!FicheroUsarioExiste(fichU)) {
+			System.out.println("El fichero no existe");
+		} else {
+			System.out.println("Introduce el ID del usuario al que quieres añadir un libro");
+			idUsuario = Utilidades.introducirCadena();
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU))) {
+				while (!finArchivo || !encontrado) {
 					try {
 						Usuario usuario = (Usuario) ois.readObject();
-						System.out.println("Introduce el ID del usuario al dar de baja");
-						String dniTrabajador = Utilidades.introducirCadena();
-						oos.writeObject(usuario);
+						if (usuario.getIdUsuario().equals(idUsuario)) {
+							System.out.println("Se ha encontrado el usuario: " + usuario.getNombre());
+							System.out.println("Introduce el ISBN del libro a añadir:");
+							int isbnLibro = Utilidades.leerInt();
+							try (ObjectInputStream ois2 = new ObjectInputStream(new FileInputStream(fichL))) {
+								while (!finArchivo || !encontrado) {
+									try {
+										Libro libro = (Libro) ois2.readObject();
+										if (libro.getIsbn() == isbnLibro) {
+											System.out.println("Se ha encontrado el libro: " + libro.getTitulo());
+											usuario.getLibrosPrestados().put(libro, LocalDate.now().plusWeeks(2));
+											encontrado = true;
+										}
+									} catch (EOFException e) {
+										finArchivo = true;
+									}
+								}
+							} catch (IOException | ClassNotFoundException e) {
+								System.out.println("Error procesando el fichero de libros");
+							}
+							encontrado = true;
+							System.out.println("Libro añadido correctamente al usuario");
+						} else {
+							System.out.println("Usuario no encontrado");
+						}
 					} catch (EOFException e) {
 						finArchivo = true;
 					}
 				}
-				ois.close();
-				oos.close();
+
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Error procesando el fichero");
+			}
+		}
+	}
+
+	private static void eliminarLibroDeUsuario() {
+
+	}
+
+	private static void borrarUsuario(File fichU) {
+		boolean finArchivo = false;
+		boolean encontrado = false;
+		String idUsuario;
+
+		if (!FicheroUsarioExiste(fichU)) {
+			System.out.println("El fichero no existe");
+		} else {
+			File tempFile = new File("temp.dat");
+			System.out.println("Introduce el ID del usuario a dar de baja:");
+			idUsuario = Utilidades.introducirCadena();
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU));
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile))) {  
+				while (!finArchivo) {
+					try {
+						Usuario usuario = (Usuario) ois.readObject();
+						if (!usuario.getIdUsuario().equals(idUsuario)) {
+							oos.writeObject(usuario);
+						} else {
+							encontrado = true;
+						}
+					} catch (EOFException e) {
+						finArchivo = true;
+					}
+				}
 				if (!fichU.delete()) {
 					System.out.println("No se pudo borrar el archivo original");
 					return;
 				}
 				if (!tempFile.renameTo(fichU)) {
 					System.out.println("No se pudo renombrar el archivo temporal");
+					return;
 				}
-			} catch (FileNotFoundException e) {
-				System.out.println("No se encontró el fichero");
-			} catch (ClassNotFoundException e) {
-				System.out.println("La clase Usuario no es válida");
-			} catch (IOException e) {
-				System.out.println("Error leyendo el fichero");
+				if (encontrado) {
+					System.out.println("Usuario eliminado correctamente");
+				} else {
+					System.out.println("Usuario no encontrado");
+				}
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Error procesando el fichero");
 			}
-		} else {
-			System.out.println("El fichero no existe");
 		}
-	}
-
-	private static void eliminarLibroDeUsuario() {
-
 	}
 
 	private static void listarUsuariosConSusLibros(File fichU) {
@@ -273,7 +329,7 @@ public class GestionarBiblioteca {
 			System.out.println("El fichero no existe");
 		}
 	}
-	
+
 	private static void buscarUsuarioId(File fichU) {
 		if (FicheroUsarioExiste(fichU)) {
 			boolean finArchivo = false;
@@ -310,7 +366,7 @@ public class GestionarBiblioteca {
 		} else {
 			System.out.println("El fichero no existe");
 		}
-		
+
 	}
 
 }
