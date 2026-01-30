@@ -181,6 +181,7 @@ public class GestionarBiblioteca {
 		boolean finArchivo = false;
 		boolean encontrado = false;
 		String idUsuario;
+		int isbnLibro;
 
 		if (!FicheroUsarioExiste(fichU)) {
 			System.out.println("El fichero no existe");
@@ -194,7 +195,7 @@ public class GestionarBiblioteca {
 						if (usuario.getIdUsuario().equals(idUsuario)) {
 							System.out.println("Se ha encontrado el usuario: " + usuario.getNombre());
 							System.out.println("Introduce el ISBN del libro a añadir:");
-							int isbnLibro = Utilidades.leerInt();
+							isbnLibro = Utilidades.leerInt();
 							try (ObjectInputStream ois2 = new ObjectInputStream(new FileInputStream(fichL))) {
 								while (!finArchivo || !encontrado) {
 									try {
