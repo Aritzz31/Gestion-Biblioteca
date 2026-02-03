@@ -68,7 +68,7 @@ public class GestionarBiblioteca {
 		System.out.println("8- Modificar datos de libros");
 		System.out.println("9- Salir");
 		return Utilidades.leerInt(1, 9);
-		
+
 	}
 	private static void crearUsuario(File fichU) {
 		LocalDate fechaNacimiento;
@@ -120,21 +120,39 @@ public class GestionarBiblioteca {
 			ObjectOutputStream oos;
 			try {
 				oos = new ObjectOutputStream(new FileOutputStream(fichL, true));
-				Libro libro1 = new LFisico("El Quijote","1234567890123", "Miguel de Cervantes", Genero.AVENTURAS, true, 5);
-				Libro libro2 = new LFisico("Dracula","3216549876543", "Bram Stoker", Genero.TERROR, false, 3);
-				Libro libro3 = new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF, 2.5);
-				Libro libro4 = new LDigital("El Principito", "4567891230123", "Antoine de Saint-Exupéry", Genero.AVENTURAS, Formato.EPUB, 1.2);
-				oos.writeObject(libro1);
-				oos.writeObject(libro2);
-				oos.writeObject(libro3);
-				oos.writeObject(libro4);
+				Libro libroF1 = new LFisico("El Quijote","1234567890123", "Miguel de Cervantes", Genero.AVENTURAS, true, 5);
+				Libro libroF2 = new LFisico("Dracula","3216549876543", "Bram Stoker", Genero.TERROR, false, 3);
+				Libro libroF3 = new LFisico("Tin Tin","9263282332482", "Georges Remi", Genero.AVENTURAS, true, 8);
+				Libro libroF4 = new LFisico("One Piece","2637272883232", "Eiichiro Oda", Genero.AVENTURAS, false, 7);
+				Libro libroF5 = new LFisico("Orgullo y prejuicio","8462835007841", "Jane Austen", Genero.ROMANCE, true, 4);
+				Libro libroD1 = new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF, 2.5);
+				Libro libroD2 = new LDigital("El Principito", "4567891230123", "Antoine de Saint-Exupéry", Genero.AVENTURAS, Formato.TXT, 1.2);
+				Libro libroD3 = new LDigital("Fahrenheit 451", "1192820576467", "Ray Bradbury", Genero.DISTOPICO, Formato.PDF, 2.5);
+				Libro libroD4 = new LDigital("It", "0000000483628", "Stephen King", Genero.TERROR, Formato.EPUB, 1.2);
+				Libro libroD5 = new LDigital("Dune", "4863766767676", "Frank Herbert", Genero.FICCION, Formato.TXT, 2.5);
+
+				oos.writeObject(libroF1);
+				oos.writeObject(libroF2);
+				oos.writeObject(libroF3);
+				oos.writeObject(libroF4);
+				oos.writeObject(libroF5);
+				oos.writeObject(libroD1);
+				oos.writeObject(libroD2);
+				oos.writeObject(libroD3);
+				oos.writeObject(libroD4);
+				oos.writeObject(libroD5);
 				oos.close();
+
 			} catch (IOException e) {
+
 				e.printStackTrace();
+
 			}
+
 		}
+
 	}
-	
+
 	private static void buscarLibroUsuario(File fichU, File fichL, String idUsuario, HashMap<Libro, LocalDate> LibrosUsuarios) {
 		int isbnLibro;		
 		new HashMap<Libro, LocalDate>();
@@ -204,7 +222,7 @@ public class GestionarBiblioteca {
 			}
 		}
 	}
-	
+
 	private static void eliminarLibroDeUsuario() {
 	}
 	private static void borrarUsuario(File fichU) {
