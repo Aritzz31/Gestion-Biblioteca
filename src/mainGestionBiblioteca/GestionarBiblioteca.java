@@ -54,7 +54,7 @@ public class GestionarBiblioteca {
 				System.out.println("Saliendo del programa...");
 				break;
 			}
-		} while (opcion != 8);
+		} while (opcion != 9);
 	}
 	public static int mostrarMenu() {
 		System.out.println("----- Gestion de Biblioteca -----");
@@ -66,6 +66,7 @@ public class GestionarBiblioteca {
 		System.out.println("6- Listar catalogo de libros");
 		System.out.println("7- Buscar usuario por ID");
 		System.out.println("8- Modificar datos de libros");
+		System.out.println("9- Salir");
 		return Utilidades.leerInt(1, 9);
 	}
 	private static void crearUsuario(File fichU) {
@@ -98,7 +99,7 @@ public class GestionarBiblioteca {
 		MyObjectOutputStream moos;
 		ObjectOutputStream oos;
 		try {
-			if (FicheroUsarioExiste(fichU)) {
+			if (!fichU.exists()) {
 				oos = new ObjectOutputStream(new FileOutputStream(fichU, true));
 				oos.writeObject(nuevoUsuario);
 				oos.close();
@@ -132,30 +133,7 @@ public class GestionarBiblioteca {
 			}
 		}
 	}
-	private static boolean FicheroUsarioExiste(File fichU) {
-		boolean finArchivo = false, existe = false;
-		ObjectInputStream ois = null;
-		if (!fichU.exists()) {
-			try {
-				ois = new ObjectInputStream(new FileInputStream(fichU));
-				while (!finArchivo) {
-					try {
-						Usuario p = (Usuario) ois.readObject();
-					} catch (EOFException e) {
-						finArchivo = true;
-					}
-				}
-				ois.close();
-			} catch (FileNotFoundException e) {
-				System.out.println("No se encontró el fichero");
-			} catch (ClassNotFoundException e) {
-				System.out.println("La clase Usuario no es válida");
-			} catch (IOException e) {
-				System.out.println("Error leyendo el fichero");
-			}
-		}
-		return existe;
-	}
+	
 	private static void buscarLibroUsuario(File fichU, File fichL, String idUsuario, HashMap<Libro, LocalDate> LibrosUsuarios) {
 		int isbnLibro;		
 		new HashMap<Libro, LocalDate>();
@@ -186,7 +164,7 @@ public class GestionarBiblioteca {
 		//Comprobar que el libro existe
 		boolean finArchivo = false;
 		boolean encontrado = false;
-		if (!FicheroUsarioExiste(fichU)) {
+		if (!fichU.exists()) {
 			System.out.println("El fichero no existe");
 		} else {
 			File tempFile = new File("temp.dat");
@@ -232,7 +210,7 @@ public class GestionarBiblioteca {
 		boolean finArchivo = false;
 		boolean encontrado = false;
 		String idUsuario;
-		if (!FicheroUsarioExiste(fichU)) {
+		if (!fichU.exists()) {
 			System.out.println("El fichero no existe");
 		} else {
 			File tempFile = new File("temp.dat");
@@ -323,7 +301,7 @@ public class GestionarBiblioteca {
 		}
 	}
 	private static void buscarUsuarioId(File fichU) {
-		if (FicheroUsarioExiste(fichU)) {
+		if (!fichU.exists()) {
 			boolean finArchivo = false;
 			File tempFile = new File("temp.dat");
 			try {
