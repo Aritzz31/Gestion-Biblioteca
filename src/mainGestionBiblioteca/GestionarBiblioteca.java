@@ -47,8 +47,10 @@ public class GestionarBiblioteca {
 				listarLibros(fichL);
 				break;
 			case 7:
+				buscarUsuarioXId(fichU);
 				break;
 			case 8:
+				
 				break;
 			case 9:
 				System.out.println("Saliendo del programa...");
@@ -146,11 +148,8 @@ public class GestionarBiblioteca {
 			} catch (IOException e) {
 
 				e.printStackTrace();
-
 			}
-
 		}
-
 	}
 
 	private static void buscarLibroUsuario(File fichU, File fichL, String idUsuario, HashMap<Libro, LocalDate> LibrosUsuarios) {
@@ -177,6 +176,33 @@ public class GestionarBiblioteca {
 			System.out.println("Error procesando el fichero de libros");
 		}
 	}
+	
+	private static void buscarUsuarioXId(File fichU) {
+		String idUsuario;		
+		boolean encontrado = false;
+		boolean finArchivo = false;
+		System.out.println("Introduce el Id del usuario:");
+		idUsuario = Utilidades.introducirCadena();
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU))) {
+			while (!finArchivo || !encontrado) {
+				try {
+					Usuario usuarios = (Usuario) ois.readObject();
+					if (usuarios.getIdUsuario() == idUsuario) {
+						usuarios.toString();
+						encontrado = true;
+					}
+				} catch (EOFException e) {
+					if (!encontrado) {
+						System.out.println("No se ha encontrado el usuario con ID: " + idUsuario);
+					}
+					finArchivo = true;
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error procesando el fichero de libros");
+		}
+	}
+	
 	private static void añadirLibroUsuario(File fichU, File fichL, String idUsuario, HashMap<Libro, LocalDate> LibrosUsuarios) {
 		//Comprobar que el fichero usuario existe
 		//Comprobar que el el usuario existe
@@ -191,6 +217,8 @@ public class GestionarBiblioteca {
 					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile))) { 
 				while (!finArchivo || !encontrado) {
 					try {
+						System.out.println("Introduce el ID del usuario al que desea añadir un libro:");
+						idUsuario = Utilidades.introducirCadena();
 						Usuario usuario = (Usuario) ois.readObject();
 						if (!usuario.getIdUsuario().equals(idUsuario)) {
 							oos.writeObject(usuario);
@@ -225,6 +253,7 @@ public class GestionarBiblioteca {
 
 	private static void eliminarLibroDeUsuario() {
 	}
+	
 	private static void borrarUsuario(File fichU) {
 		boolean finArchivo = false;
 		boolean encontrado = false;
