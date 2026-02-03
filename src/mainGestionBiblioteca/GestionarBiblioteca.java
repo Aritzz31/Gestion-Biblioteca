@@ -68,6 +68,7 @@ public class GestionarBiblioteca {
 		System.out.println("8- Modificar datos de libros");
 		System.out.println("9- Salir");
 		return Utilidades.leerInt(1, 9);
+		
 	}
 	private static void crearUsuario(File fichU) {
 		LocalDate fechaNacimiento;
