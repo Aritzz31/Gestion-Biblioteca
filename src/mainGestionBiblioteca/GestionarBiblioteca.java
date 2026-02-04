@@ -251,8 +251,108 @@ public class GestionarBiblioteca {
 		}
 	}
 
-	private static void eliminarLibroDeUsuario() {
+	private static void eliminarLibroDeUsuario(File fichU) {
+		
+		if (!fichU.exists()) {
+            System.out.println("No hay usuarios.");
+            return;
+
+        }
+
+
+
+        System.out.println("Introduce el ID del usuario:");
+        String id = Utilidades.introducirCadena();
+        File temp = new File("temp.dat");
+
+        boolean encontrado = false;
+        ObjectInputStream ois = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            ois = new ObjectInputStream(new FileInputStream(fichU));
+            oos = new ObjectOutputStream(new FileOutputStream(temp));
+            boolean finArchivo = false;
+            
+            while (!finArchivo) {
+
+                try {
+
+                    Usuario u = (Usuario) ois.readObject();
+                    if (u.getIdUsuario().equals(id)) {
+                        if (!u.getLibrosPrestados().isEmpty()) {
+                            System.out.println("Introduce ISBN del libro a eliminar:");
+                            String isbn = Utilidades.introducirCadena();
+                            Libro libroEliminar = null;
+                            for (Libro l : u.getLibrosPrestados().keySet()) {
+
+                                if (l.getIsbn() == isbn) {
+
+                                    libroEliminar = l;
+
+                                    break;
+
+                                }
+
+                            }
+
+                            if (libroEliminar != null) {
+
+                                u.getLibrosPrestados().remove(libroEliminar);
+
+                                System.out.println("Libro eliminado correctamente");
+
+                                encontrado = true;
+
+                            } else {
+
+                                System.out.println("Libro no encontrado en este usuario");
+
+                            }
+
+                        } else {
+
+                            System.out.println("El usuario no tiene libros prestados");
+
+                        }
+
+                    }
+
+                    oos.writeObject(u);
+
+                } catch (EOFException e) {
+
+                    finArchivo = true;
+
+                }
+
+            }
+
+
+
+            ois.close();
+
+            oos.close();
+
+            fichU.delete();
+
+            temp.renameTo(fichU);
+
+
+
+            if (!encontrado) System.out.println("Usuario no encontrado o no tenía el libro");
+
+
+
+        } catch (IOException | ClassNotFoundException e) {
+
+            System.out.println("Error procesando usuarios");
+
+        }
+
+
 	}
+
 	
 	private static void borrarUsuario(File fichU) {
 		boolean finArchivo = false;
