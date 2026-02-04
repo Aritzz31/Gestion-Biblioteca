@@ -476,6 +476,7 @@ public class GestionarBiblioteca {
 						finArchivo = true;
 					}
 				}
+				
 				ois.close();
 				oos.close();
 				if (!fichU.delete()) {
