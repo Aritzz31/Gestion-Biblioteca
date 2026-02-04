@@ -153,17 +153,17 @@ public class GestionarBiblioteca {
 	}
 
 	private static void buscarLibroUsuario(File fichU, File fichL, String idUsuario, HashMap<Libro, LocalDate> LibrosUsuarios) {
-		int isbnLibro;		
+		String isbnLibro;		
 		new HashMap<Libro, LocalDate>();
 		boolean encontrado = false;
 		boolean finArchivo = false;
 		System.out.println("Introduce el ISBN del libro a añadir:");
-		isbnLibro = Utilidades.leerInt();
+		isbnLibro = Utilidades.introducirCadena();
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichL))) {
 			while (!finArchivo || !encontrado) {
 				try {
 					Libro libro = (Libro) ois.readObject();
-					if (libro.getIsbn() == isbnLibro) {
+					if (libro.getIsbn().equals(isbnLibro)) {
 						System.out.println("Se ha encontrado el libro: " + libro.getTitulo());
 						LibrosUsuarios.put(libro, LocalDate.now().plusWeeks(2));
 						encontrado = true;

@@ -4,14 +4,14 @@ import java.io.Serializable;
 public abstract class Libro implements Serializable {
 
 	protected String titulo;
-	protected int isbn;
+	protected String isbn;
 	protected String autor;
 	protected Genero genero;
 
 	public Libro(String titulo, String isbn, String autor, Genero genero) {
 		super();
 		this.titulo = titulo;
-		this.isbn = (int)Math.random() * 1000000000; //ISBN aleatorio
+		this.isbn = isbn;
 		this.autor = autor;
 		this.genero = genero;
 	}
@@ -24,11 +24,11 @@ public abstract class Libro implements Serializable {
 		this.titulo = titulo;
 	}
 
-	public int getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 
