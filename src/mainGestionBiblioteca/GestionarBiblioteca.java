@@ -1,6 +1,7 @@
 package mainGestionBiblioteca;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import utilidades.Utilidades;
 import clasesBiblioteca.Libro;
@@ -77,11 +78,13 @@ public class GestionarBiblioteca {
 	}
 
 	private static void crearUsuario(File fichU) {
-		LocalDate fechaNacimiento;
+		LocalDate fechaNacimiento = null,fechaActual;
 		String nombre, contraseña;
 		Usuario nuevoUsuario;
 		MyObjectOutputStream moos;
 		ObjectOutputStream oos;
+		boolean fechaCorrecta = false;
+		
 		System.out.println("Introduce el nombre del usuario:");
 		nombre = Utilidades.introducirCadena(); // El nombre no puede tener menos de 2 caracteres
 		try {
@@ -103,8 +106,20 @@ public class GestionarBiblioteca {
 		} catch (Exception e) {
 			System.out.println("Error al introducir la contraseña del usuario.");
 		}
-		System.out.println("Introduzca su fecha de nacumiento (aaaa/mm/dd):");
-		fechaNacimiento = Utilidades.leerFechaAMD();
+		
+		fechaActual = LocalDate.now();
+		do {
+		    System.out.println("Introduzca su fecha de nacimiento (aaaa/mm/dd):");
+		    fechaNacimiento = Utilidades.leerFechaAMD();
+
+		    if (fechaNacimiento.isAfter(fechaActual)) {
+		        System.out.println("La fecha no puede ser futura. Inténtalo otra vez.");
+		    }
+		} while (fechaNacimiento.isAfter(fechaActual));
+
+		System.out.println("Fecha válida");
+
+
 		nuevoUsuario = new Usuario(nombre, contraseña, fechaNacimiento);
 
 		try {
