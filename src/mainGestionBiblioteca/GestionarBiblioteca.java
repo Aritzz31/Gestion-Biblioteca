@@ -42,6 +42,7 @@ public class GestionarBiblioteca {
 				borrarUsuario(fichU);
 				break;
 			case 4:
+				eliminarLibroDeUsuario(fichU);
 				break;
 			case 5:
 				listarUsuariosConSusLibros(fichU);
@@ -84,7 +85,7 @@ public class GestionarBiblioteca {
 		MyObjectOutputStream moos;
 		ObjectOutputStream oos;
 		boolean fechaCorrecta = false;
-		
+
 		System.out.println("Introduce el nombre del usuario:");
 		nombre = Utilidades.introducirCadena(); // El nombre no puede tener menos de 2 caracteres
 		try {
@@ -106,15 +107,15 @@ public class GestionarBiblioteca {
 		} catch (Exception e) {
 			System.out.println("Error al introducir la contraseña del usuario.");
 		}
-		
+
 		fechaActual = LocalDate.now();
 		do {
-		    System.out.println("Introduzca su fecha de nacimiento (aaaa/mm/dd):");
-		    fechaNacimiento = Utilidades.leerFechaAMD();
+			System.out.println("Introduzca su fecha de nacimiento (aaaa/mm/dd):");
+			fechaNacimiento = Utilidades.leerFechaAMD();
 
-		    if (fechaNacimiento.isAfter(fechaActual)) {
-		        System.out.println("La fecha no puede ser futura. Inténtalo otra vez.");
-		    }
+			if (fechaNacimiento.isAfter(fechaActual)) {
+				System.out.println("La fecha no puede ser futura. Inténtalo otra vez.");
+			}
 		} while (fechaNacimiento.isAfter(fechaActual));
 
 		System.out.println("Fecha válida");
@@ -238,14 +239,14 @@ public class GestionarBiblioteca {
 			while (!finArchivo || !encontrado) {
 				try {
 					usuarios = (Usuario) ois.readObject();
-					if (usuarios.getIdUsuario() == idUsuario) {
-						usuarios.toString();
+					if (usuarios.getIdUsuario().equalsIgnoreCase(idUsuario)) {
+						System.out.println(usuarios.toString());
 						encontrado = true;
 					}
 				} catch (EOFException e) {
 					if (!encontrado) {
 						System.out.println("No se ha encontrado el usuario con ID: " + idUsuario);
-					}
+					} 
 					finArchivo = true;
 				}
 			}
@@ -578,7 +579,7 @@ public class GestionarBiblioteca {
 									}
 									break;
 
-									
+
 								case 4:
 									if (libro instanceof LFisico) {
 										LFisico lf = (LFisico) libro;
@@ -623,22 +624,22 @@ public class GestionarBiblioteca {
 					}
 				}
 			} catch (IOException | ClassNotFoundException e) {
-	            System.out.println("Error procesando el fichero de libros.");
-	            error = true;
-	        }
+				System.out.println("Error procesando el fichero de libros.");
+				error = true;
+			}
 
-	        if (!error) {
-	            boolean borrado = fichL.delete();
-	            boolean renombrado = temp.renameTo(fichL);
+			if (!error) {
+				boolean borrado = fichL.delete();
+				boolean renombrado = temp.renameTo(fichL);
 
-	            if (!borrado) System.out.println("No se pudo borrar el fichero original.");
-	            if (!renombrado) System.out.println("No se pudo renombrar el fichero temporal.");
+				if (!borrado) System.out.println("No se pudo borrar el fichero original.");
+				if (!renombrado) System.out.println("No se pudo renombrar el fichero temporal.");
 
-	            if (encontrado)
-	                System.out.println("Libro modificado correctamente.");
-	            else
-	                System.out.println("No se encontró ningún libro con ese ISBN.");
-	        }
+				if (encontrado)
+					System.out.println("Libro modificado correctamente.");
+				else
+					System.out.println("No se encontró ningún libro con ese ISBN.");
+			}
 		}
 	}
 

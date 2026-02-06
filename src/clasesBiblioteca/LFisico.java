@@ -38,9 +38,12 @@ public class LFisico extends Libro {
 		this.disponibles = disponibles;
 	}
 
-
 	@Override
 	public String toString() {
-		return "LFisico [tapaDura=" + tapaDura + ", disponibles=" + disponibles + "]";
+		return "LIBRO FISICO \n Disponibles=" + disponibles + ", titulo=" + titulo + ", \n isbn="
+				+ isbn + ", autor=" + autor + ", \n genero=" + genero;
 	}
+
+
+	
 }
