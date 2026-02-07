@@ -9,6 +9,7 @@ import clasesBiblioteca.Usuario;
 import clasesBiblioteca.Genero;
 import clasesBiblioteca.LDigital;
 import clasesBiblioteca.LFisico;
+import clasesBiblioteca.FechaNacimientoException;
 import clasesBiblioteca.Formato;
 import java.io.EOFException;
 import java.io.File;
@@ -85,6 +86,7 @@ public class GestionarBiblioteca {
 		MyObjectOutputStream moos;
 		ObjectOutputStream oos;
 		boolean fechaCorrecta = false;
+		fechaActual = LocalDate.now();
 
 		System.out.println("Introduce el nombre del usuario:");
 		nombre = Utilidades.introducirCadena(); // El nombre no puede tener menos de 2 caracteres
@@ -108,17 +110,19 @@ public class GestionarBiblioteca {
 			System.out.println("Error al introducir la contraseña del usuario.");
 		}
 
-		fechaActual = LocalDate.now();
-		do {
-			System.out.println("Introduzca su fecha de nacimiento (aaaa/mm/dd):");
-			fechaNacimiento = Utilidades.leerFechaAMD();
-
-			if (fechaNacimiento.isAfter(fechaActual)) {
-				System.out.println("La fecha no puede ser futura. Inténtalo otra vez.");
+		System.out.println("Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
+		//Deber ser mayor de edad
+		while (!fechaCorrecta) {
+			try {
+				fechaNacimiento = LocalDate.parse(Utilidades.introducirCadena());
+				validarFechaNacimiento(fechaNacimiento, fechaActual);
+				fechaCorrecta = true;
+			} catch (DateTimeParseException e) {
+				System.out.println("Formato de fecha no válido. Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
+			} catch (FechaNacimientoException e) {
+				System.out.println(e.getMessage() + " Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
 			}
-		} while (fechaNacimiento.isAfter(fechaActual));
-
-		System.out.println("Fecha válida");
+		}
 
 
 		nuevoUsuario = new Usuario(nombre, contraseña, fechaNacimiento);
@@ -139,6 +143,15 @@ public class GestionarBiblioteca {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void validarFechaNacimiento(LocalDate fechaNacimiento, LocalDate fechaActual) {
+	    if (fechaNacimiento.isAfter(fechaActual)) {
+	        throw new FechaNacimientoException("La fecha no puede ser futura.");
+	    }
+	    if (fechaNacimiento.isAfter(fechaActual.minusYears(18))) {
+	        throw new FechaNacimientoException("Debes ser mayor de edad.");
+	    }
 	}
 
 	private static void FillData(File fichL) {
