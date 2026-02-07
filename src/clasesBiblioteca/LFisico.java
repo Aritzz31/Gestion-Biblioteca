@@ -40,10 +40,6 @@ public class LFisico extends Libro {
 
 	@Override
 	public String toString() {
-		return "LIBRO FISICO \n Disponibles=" + disponibles + ", titulo=" + titulo + ", \n isbn="
-				+ isbn + ", autor=" + autor + ", \n genero=" + genero;
+		return  titulo + " --> Libro Fisico \nISBS: "+ isbn +" | Autor: "+autor+" \nGenero: "+genero+" | Tapa Dura: " + tapaDura + " | Disponibles: " + disponibles + "\n";
 	}
-
-
-	
 }

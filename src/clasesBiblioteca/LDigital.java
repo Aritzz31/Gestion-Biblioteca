@@ -35,9 +35,9 @@ public class LDigital extends Libro {
 	public void setTamanoMB(double tamanoMB) {
 		this.tamanoMB = tamanoMB;
 	}
-
-	@Override
+	
 	public String toString() {
-		return "LDigital [formato=" + formato + ", tamanoMB=" + tamanoMB + "]";
+		return  titulo + " --> Libro Digital \nISBS: "+ isbn +" | Autor: "+autor+" \nGenero: "+genero+" | Formato: " + formato + " | TamanoMB: " + tamanoMB + "\n";
 	}
+
 }

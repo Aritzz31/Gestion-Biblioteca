@@ -101,7 +101,6 @@ public class Usuario implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Usuario [nombre=" + nombre + ", idUsuario=" + idUsuario + ", contraseña=" + contraseña + ", Suspendido="
-				+ Suspendido + ", librosPrestados=" + librosPrestados + ", fechaNacimiento=" + fechaNacimiento + "]";
+		return  "Usuario --> " +nombre +" \nID: "+ idUsuario +" | Contraseña: "+contraseña+" | Suspendido: "+Suspendido+" \nLibros Prestados: " + librosPrestados + " | Fecha de Nacimiento: " + fechaNacimiento + "\n";
 	}
 }
