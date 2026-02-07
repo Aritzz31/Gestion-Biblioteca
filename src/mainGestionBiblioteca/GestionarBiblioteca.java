@@ -27,7 +27,7 @@ public class GestionarBiblioteca {
 		HashMap<Libro, LocalDate> LibrosUsuarios = new HashMap<Libro, LocalDate>();
 		File fichU = new File("usuarios.dat");
 		File fichL = new File("libros.dat");
-		FillData(fichL);
+		fillDataFich(fichL, fichU);
 		int opcion;
 		do {
 			opcion = mostrarMenu();
@@ -118,7 +118,7 @@ public class GestionarBiblioteca {
 				validarFechaNacimiento(fechaNacimiento, fechaActual);
 				fechaCorrecta = true;
 			} catch (DateTimeParseException e) {
-				System.out.println("Formato de fecha no válido. Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
+				System.out.println("Formato de fecha no valido. Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
 			} catch (FechaNacimientoException e) {
 				System.out.println(e.getMessage() + " Introduce la fecha de nacimiento del usuario (formato: YYYY-MM-DD):");
 			}
@@ -147,72 +147,105 @@ public class GestionarBiblioteca {
 	
 	public static void validarFechaNacimiento(LocalDate fechaNacimiento, LocalDate fechaActual) {
 	    if (fechaNacimiento.isAfter(fechaActual)) {
-	        throw new FechaNacimientoException("La fecha no puede ser futura.");
+	        throw new FechaNacimientoException("La fecha no puede ser mayor a " + fechaActual + " .");
 	    }
 	    if (fechaNacimiento.isAfter(fechaActual.minusYears(18))) {
 	        throw new FechaNacimientoException("Debes ser mayor de edad.");
 	    }
 	}
 
-	private static void FillData(File fichL) {
-		if (!fichL.exists()) {
-			ObjectOutputStream oos;
-			try {
-				oos = new ObjectOutputStream(new FileOutputStream(fichL, true));
+	private static void fillDataFich(File fichL, File fichU) {
 
-				Libro libroF1 = new LFisico("El Quijote", "1234567890123", "Miguel de Cervantes", Genero.AVENTURAS,true, 5);
-				Libro libroF2 = new LFisico("Dracula", "3216549876543", "Bram Stoker", Genero.TERROR, false, 3);
-				Libro libroF3 = new LFisico("Tin Tin", "9263282332482", "Georges Remi", Genero.AVENTURAS, true, 8);
-				Libro libroF4 = new LFisico("One Piece", "2637272883232", "Eiichiro Oda", Genero.AVENTURAS, false, 7);
-				Libro libroF5 = new LFisico("Orgullo y prejuicio", "8462835007841", "Jane Austen", Genero.ROMANCE, true,4);
-				Libro libroF6 = new LFisico("Los Juegos del Hambre", "9780439023528", "Suzanne Collins", Genero.DISTOPICO, true, 6);
-				Libro libroF7 = new LFisico("El Hobbit", "9780547928227", "J.R.R. Tolkien", Genero.FICCION, true, 10);
-				Libro libroF8 = new LFisico("Sherlock Holmes", "9788491050293", "Arthur Conan Doyle", Genero.DISTOPICO, false, 4);
-				Libro libroF9 = new LFisico("La Historia Interminable", "9788420435737", "Michael Ende", Genero.FICCION, true, 5);
-				Libro libroF10 = new LFisico("Romeo y Julieta", "9788497941021", "William Shakespeare", Genero.ROMANCE, false, 2);
+	    if (!fichL.exists()) {
+	        ObjectOutputStream oos;
+	        try {
+	            oos = new ObjectOutputStream(new FileOutputStream(fichL, true));
 
-				Libro libroD1 = new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF,2.5);
-				Libro libroD2 = new LDigital("El Principito", "4567891230123", "Antoine de Saint-Exupéry",Genero.AVENTURAS, Formato.TXT, 1.2);
-				Libro libroD3 = new LDigital("Fahrenheit 451", "1192820576467", "Ray Bradbury", Genero.DISTOPICO,Formato.PDF, 2.5);
-				Libro libroD4 = new LDigital("It", "0000000483628", "Stephen King", Genero.TERROR, Formato.EPUB, 1.2);
-				Libro libroD5 = new LDigital("Dune", "4863766767676", "Frank Herbert", Genero.FICCION, Formato.TXT,2.5);
-				Libro libroD6 = new LDigital("La Metamorfosis", "9788420674204", "Franz Kafka", Genero.FICCION, Formato.PDF, 1.1);
-				Libro libroD7 = new LDigital("Ready Player One", "9780307887443", "Ernest Cline", Genero.FICCION, Formato.EPUB, 3.0);
-				Libro libroD8 = new LDigital("El Código Da Vinci", "9780307474278", "Dan Brown", Genero.DISTOPICO, Formato.PDF, 2.8);
-				Libro libroD9 = new LDigital("La Sombra del Viento", "9788408172177", "Carlos Ruiz Zafón", Genero.DISTOPICO, Formato.EPUB, 2.6);
-				Libro libroD10 = new LDigital("El Alquimista", "9780061122415", "Paulo Coelho", Genero.AVENTURAS, Formato.TXT, 1.0);
+	            Libro libroF1 = new LFisico("El Quijote", "1234567890123", "Miguel de Cervantes", Genero.AVENTURAS, true, 5);
+	            Libro libroF2 = new LFisico("Dracula", "3216549876543", "Bram Stoker", Genero.TERROR, false, 3);
+	            Libro libroF3 = new LFisico("Tin Tin", "9263282332482", "Georges Remi", Genero.AVENTURAS, true, 8);
+	            Libro libroF4 = new LFisico("One Piece", "2637272883232", "Eiichiro Oda", Genero.AVENTURAS, false, 7);
+	            Libro libroF5 = new LFisico("Orgullo y prejuicio", "8462835007841", "Jane Austen", Genero.ROMANCE, true, 4);
+	            Libro libroF6 = new LFisico("Los Juegos del Hambre", "9780439023528", "Suzanne Collins", Genero.DISTOPICO, true, 6);
+	            Libro libroF7 = new LFisico("El Hobbit", "9780547928227", "J.R.R. Tolkien", Genero.FICCION, true, 10);
+	            Libro libroF8 = new LFisico("Sherlock Holmes", "9788491050293", "Arthur Conan Doyle", Genero.DISTOPICO, false, 4);
+	            Libro libroF9 = new LFisico("La Historia Interminable", "9788420435737", "Michael Ende", Genero.FICCION, true, 5);
+	            Libro libroF10 = new LFisico("Romeo y Julieta", "9788497941021", "William Shakespeare", Genero.ROMANCE, false, 2);
 
-				oos.writeObject(libroF1);
-				oos.writeObject(libroF2);
-				oos.writeObject(libroF3);
-				oos.writeObject(libroF4);
-				oos.writeObject(libroF5);
-				oos.writeObject(libroF6);
-				oos.writeObject(libroF7);
-				oos.writeObject(libroF8);
-				oos.writeObject(libroF9);
-				oos.writeObject(libroF10);
+	            Libro libroD1 = new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF, 2.5);
+	            Libro libroD2 = new LDigital("El Principito", "4567891230123", "Antoine de Saint-Exupéry", Genero.AVENTURAS, Formato.TXT, 1.2);
+	            Libro libroD3 = new LDigital("Fahrenheit 451", "1192820576467", "Ray Bradbury", Genero.DISTOPICO, Formato.PDF, 2.5);
+	            Libro libroD4 = new LDigital("It", "0000000483628", "Stephen King", Genero.TERROR, Formato.EPUB, 1.2);
+	            Libro libroD5 = new LDigital("Dune", "4863766767676", "Frank Herbert", Genero.FICCION, Formato.TXT, 2.5);
+	            Libro libroD6 = new LDigital("La Metamorfosis", "9788420674204", "Franz Kafka", Genero.FICCION, Formato.PDF, 1.1);
+	            Libro libroD7 = new LDigital("Ready Player One", "9780307887443", "Ernest Cline", Genero.FICCION, Formato.EPUB, 3.0);
+	            Libro libroD8 = new LDigital("El Código Da Vinci", "9780307474278", "Dan Brown", Genero.DISTOPICO, Formato.PDF, 2.8);
+	            Libro libroD9 = new LDigital("La Sombra del Viento", "9788408172177", "Carlos Ruiz Zafón", Genero.DISTOPICO, Formato.EPUB, 2.6);
+	            Libro libroD10 = new LDigital("El Alquimista", "9780061122415", "Paulo Coelho", Genero.AVENTURAS, Formato.TXT, 1.0);
 
-				oos.writeObject(libroD1);
-				oos.writeObject(libroD2);
-				oos.writeObject(libroD3);
-				oos.writeObject(libroD4);
-				oos.writeObject(libroD5);
-				oos.writeObject(libroD6);
-				oos.writeObject(libroD7);
-				oos.writeObject(libroD8);
-				oos.writeObject(libroD9);
-				oos.writeObject(libroD10);
+	            oos.writeObject(libroF1);
+	            oos.writeObject(libroF2);
+	            oos.writeObject(libroF3);
+	            oos.writeObject(libroF4);
+	            oos.writeObject(libroF5);
+	            oos.writeObject(libroF6);
+	            oos.writeObject(libroF7);
+	            oos.writeObject(libroF8);
+	            oos.writeObject(libroF9);
+	            oos.writeObject(libroF10);
 
-				oos.close();
+	            oos.writeObject(libroD1);
+	            oos.writeObject(libroD2);
+	            oos.writeObject(libroD3);
+	            oos.writeObject(libroD4);
+	            oos.writeObject(libroD5);
+	            oos.writeObject(libroD6);
+	            oos.writeObject(libroD7);
+	            oos.writeObject(libroD8);
+	            oos.writeObject(libroD9);
+	            oos.writeObject(libroD10);
 
+	            oos.close();
 
-			} catch (IOException e) {
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-				e.printStackTrace();
-			}
-		}
+	    HashMap<Libro, LocalDate> librosPrestados = new HashMap<Libro, LocalDate>();
+	    librosPrestados.put(
+	        new LFisico("El Quijote", "1234567890123", "Miguel de Cervantes", Genero.AVENTURAS, true, 5),
+	        LocalDate.now().plusWeeks(2)
+	    );
+	    librosPrestados.put(
+	        new LDigital("1984", "9876543210123", "George Orwell", Genero.FICCION, Formato.PDF, 2.5),
+	        LocalDate.now().plusWeeks(2)
+	    );
+
+	    if (!fichU.exists()) {
+	        ObjectOutputStream oos;
+	        try {
+	            oos = new ObjectOutputStream(new FileOutputStream(fichU, true));
+
+	            Usuario manolo69 = new Usuario("Manolo", "MAN-8236", "contrasena",
+	                    LocalDate.of(1990, 5, 15), librosPrestados);
+	            Usuario vagabundo33 = new Usuario("Enio", "ENI-3628", "lasArepasSonVenezolanas",
+	                    LocalDate.of(2007, 1, 1), librosPrestados);
+	            Usuario elPrimoEustaquio = new Usuario("Primo Eustaquio", "PRI-9556", "00000000",
+	                    LocalDate.of(1985, 10, 20), librosPrestados);
+
+	            oos.writeObject(manolo69);
+	            oos.writeObject(vagabundo33);
+	            oos.writeObject(elPrimoEustaquio);
+
+	            oos.close();
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
+
 
 	private static void buscarLibroUsuario(File fichU, File fichL, String idUsuario,
 			HashMap<Libro, LocalDate> LibrosUsuarios) {
@@ -458,7 +491,7 @@ public class GestionarBiblioteca {
 				while (!finArchivo) {
 					try {
 						Usuario u = (Usuario) ois.readObject();
-						System.out.println(u);
+						System.out.println(u.toString());
 					} catch (EOFException e) {
 						finArchivo = true;
 					}
@@ -495,45 +528,6 @@ public class GestionarBiblioteca {
 				System.out.println("No se encontró el fichero");
 			} catch (ClassNotFoundException e) {
 				System.out.println("La clase Libro no es válida");
-			} catch (IOException e) {
-				System.out.println("Error leyendo el fichero");
-			}
-		} else {
-			System.out.println("El fichero no existe");
-		}
-	}
-
-	private static void buscarUsuarioId(File fichU) {
-		if (!fichU.exists()) {
-			boolean finArchivo = false;
-			File tempFile = new File("temp.dat");
-			try {
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichU));
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile));
-				while (!finArchivo) {
-					try {
-						Usuario usuario = (Usuario) ois.readObject();
-						System.out.println("Introduce el ID del usuario al dar de baja");
-						String dniTrabajador = Utilidades.introducirCadena();
-						oos.writeObject(usuario);
-					} catch (EOFException e) {
-						finArchivo = true;
-					}
-				}
-
-				ois.close();
-				oos.close();
-				if (!fichU.delete()) {
-					System.out.println("No se pudo borrar el archivo original");
-					return;
-				}
-				if (!tempFile.renameTo(fichU)) {
-					System.out.println("No se pudo renombrar el archivo temporal");
-				}
-			} catch (FileNotFoundException e) {
-				System.out.println("No se encontró el fichero");
-			} catch (ClassNotFoundException e) {
-				System.out.println("La clase Usuario no es válida");
 			} catch (IOException e) {
 				System.out.println("Error leyendo el fichero");
 			}
